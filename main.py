@@ -59,7 +59,7 @@ def move_entities(hero, enemies, timeDelta):
             score += len(enemiesHit)
 
             i = random.randint(1, 30)
-            if i == 1:   #spawn health
+            if i == 1:   #spawn health randomly
                 print("health")
                 x = random.randint(0, 800)
                 y = random.randint(0, 600)

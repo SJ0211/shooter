@@ -1,0 +1,8 @@
+- images for sprites
+- background
+- higher res
+- sound effects (shooting, getting hit, gaining health)
+- background music
+- health item
+- gun graphic (rotating, changing by selection)
+- changed game balance
