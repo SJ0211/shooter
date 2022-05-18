@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-
+#import stuff
 import pygame
 import random
 from Player import Player
@@ -12,7 +12,7 @@ from Items import Health
 from pygame import RLEACCEL
 
 pygame.init()
-size = (1280, 720)
+size = (1280, 720)      #set size, fonts, caption, and prepare background
 BGCOLOR = (255, 255, 255)
 screen = pygame.display.set_mode(size)
 scoreFont = pygame.font.Font("fonts/UpheavalPro.ttf", 30)
@@ -25,7 +25,7 @@ pygame.mouse.set_visible(False)  # hide the cursor
 # Image for "manual" cursor
 MANUAL_CURSOR = pygame.image.load('aim.png').convert_alpha()
 
-
+# set sprite groups and clock
 done = False
 hero = pygame.sprite.GroupSingle(Player(screen.get_size()))
 enemies = pygame.sprite.Group()
@@ -33,7 +33,7 @@ healths = pygame.sprite.Group()
 lastEnemy = 0
 score = 0
 clock = pygame.time.Clock()
-
+#move entities and add score, health as stuff gets hit
 def move_entities(hero, enemies, timeDelta):
     global screen
 
@@ -67,7 +67,7 @@ def move_entities(hero, enemies, timeDelta):
                 healths.add(health)
 
 
-
+#health healing when get(collide into) heart item
     for health in healths:
         if pygame.sprite.spritecollide(health, hero, False):
             health.kill()
@@ -78,7 +78,7 @@ def move_entities(hero, enemies, timeDelta):
 
 
     return score
-
+#function that draws everything
 def render_entities(hero, enemies):
     hero.sprite.render(screen)
     for health in healths:
@@ -92,7 +92,7 @@ def render_entities(hero, enemies):
 
 
 
-
+# take key inputs
 def process_keys(keys, hero):
     if keys[pygame.K_w]:
         hero.sprite.movementVector[1] -= 1
@@ -112,17 +112,19 @@ def process_keys(keys, hero):
         hero.sprite.equippedWeapon = hero.sprite.availableWeapons[1]
     if keys[pygame.K_3]:
         hero.sprite.equippedWeapon = hero.sprite.availableWeapons[2]
-        
+
+ #mouse left click
 def process_mouse(mouse, hero):
     if mouse[0]:
         hero.sprite.shoot(pygame.mouse.get_pos())
 
+        #background music
 pygame.mixer.init()
 pygame.mixer.music.load("msi.wav")
 pygame.mixer.music.set_volume(1.0)
 pygame.mixer.music.play()
 
-def game_loop():
+def game_loop(): #main loop
     done = False
     hero = pygame.sprite.GroupSingle(Player(screen.get_size()))
     enemies = pygame.sprite.Group()
@@ -155,7 +157,7 @@ def game_loop():
             else:
                 enemies.add(Enemy((random.randint(0, size[0]), size[1])))
             lastEnemy = currentTime
-        
+        #draw everthing
         score += move_entities(hero, enemies, clock.get_time()/17)
         screen.blit(bg, (0, 0))
         render_entities(hero, enemies)
@@ -182,7 +184,7 @@ while not done:
     mouse = pygame.mouse.get_pressed()
     currentTime = pygame.time.get_ticks()
     screen.blit(pygame.image.load("died.png"), (0,120))
-    for i in healths:
+    for i in healths: #reset items lying around
         i.kill()
 
     scoreRender = scoreFont.render(str(score), True, pygame.Color('black'))
@@ -203,6 +205,6 @@ while not done:
         pygame.mixer.music.play()
         done = game_loop()
 
-
+    #30fps on dead screen
     clock.tick(30)
-pygame.quit()
+pygame.quit() #if out of loop, end process
